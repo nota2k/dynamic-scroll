@@ -1,0 +1,34 @@
+.container {
+
+  scroll-timeline-name: --scroll-timeline;
+  overflow-y: scroll;
+  max-width: 600px;
+  margin: 40px auto;
+  height: 300px;
+  position: relative;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background: #3190fc;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  position:absolute;
+  bottom: 0;
+  animation: scrolling-box 1s ease-in-out;
+  animation-timeline: --scroll-timeline;
+}
+
+.stretcher {
+  height: 600px;
+}
+
+@keyframes scrolling-box {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
