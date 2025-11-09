@@ -7,7 +7,6 @@
   --color-quaternary: #7F909D;
   --color-quinary: #5F6D7A;
   --color-senary: #3F4A53;
-
   --max-content-width: 100rem;
   --max-reading-measure: 50ch;
   --min-tap-size: 48px;
@@ -37,6 +36,22 @@ html {
 
 /* We'll want to match these colors for the best melty effect */
 /* But play around with them (and add a color to section) to see happens */
+body {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  --RHYTHM_UNITS: var(--font-size);
+  --RHYTHM: clamp(min(var(--line-height-min), var(--line-height-max)) * var(--RHYTHM_UNITS), var(--_line-height-base-value) * var(--RHYTHM_UNITS) + var(--_line-height-step) * 100vw, max(var(--line-height-max), var(--line-height-min)) * var(--RHYTHM_UNITS));
+  --spacing: var(--RHYTHM);
+  --base-font-size-min: var(--font-size-min);
+  --base-font-size-max: var(--font-size-max);
+  --base-line-height-min: var(--line-height-min);
+  --base-line-height-max: var(--line-height-max);
+}
+
+main {
+  view-timeline: --main;
+}
+
 body,
 .content {
   background-color: #161820;
@@ -58,6 +73,7 @@ body,
     height: 100vh;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     gap: 10%;
 
   }
@@ -67,13 +83,13 @@ body,
 @keyframes blink {
   0%,
   100% {
-    filter: blur(var(--blur)) contrast(var(--contrast));
+    filter: blur(var(--blur));
     opacity: 0;
     visibility: hidden;
   }
 
   50% {
-    filter: blur(0) contrast(1);
+    filter: blur(0);
     opacity: 1;
     visibility: visible;
   }
@@ -102,6 +118,7 @@ main {
 
   .image-container {
     width: 50%;
+    min-width: 500px;
     position: relative;
 
     &::before {
@@ -132,7 +149,9 @@ main {
     position: relative;
     font-weight: 400;
     color:#E1F1F2;
-    margin-left: -50%;
+    margin-left: -70%;
+
+    
   }
 
   .text {
@@ -144,6 +163,11 @@ main {
       max-width: 70%;
     }
   }
+}
+
+strong {
+  font-weight: 700;
+  color:var(--color-link);
 }
 
 .content {
@@ -160,15 +184,51 @@ main {
   animation-timeline: --section;
 }
 
+.site-header {
+  inset-block-start: 0;
+  inset-block-end: auto;
+  width: 100%;
+  height: 100px;
+  z-index: 200;
+  position: absolute;
+  padding: 0 var(--spacing);
+  box-sizing: border-box;
+}
+
+.site-header label:last-of-type {
+  view-timeline: --site-header inline;
+}
+
+.site-header::after {
+  animation: fade-scroll ease-in-out both;
+  animation-timeline: --site-header;
+  animation-range: entry-crossing;
+}
+
+@keyframes fade-scroll {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 nav {
-  --indicator-top: 1rem;
-  --indicator-right: 1rem;
-  --indicator-padding: 0.25em;
-  --indicator-gap: 1rem;
-  --indicator-size: 30px;
-  --indicator-total-height: calc(var(--indicator-size) + var(--indicator-padding) * 2);
+  --indicator-number: 5;
+  --indicator-top: 50dvb;
+  --indicator-right: var(--spacing);
+  --indicator-size: 1em;
+  --indicator-padding: calc((var(--min-tap-size) - var(--indicator-size)) / 2);
+  --indicator-clipped-margins: var(--indicator-padding) * 2;
+  --indicator-total-size: calc(var(--indicator-size) + var(--indicator-padding) * 2);
+  --indicator-gap: var(--min-tap-space);
+  --indicator-total-gap: calc(var(--indicator-gap) * (var(--indicator-number) - 1));
+  --indicator-total-height: calc(var(--indicator-total-size) * var(--indicator-number) + var(--indicator-total-gap) - var(--indicator-clipped-margins));
 
   position: fixed;
+  right: 0!important;
   inset-block-start: var(--indicator-top);
   inset-inline-end: var(--indicator-right);
   margin-block-start: calc(var(--indicator-total-height) / -2);
@@ -231,7 +291,7 @@ nav {
   
 }
 
-.indicator {
+.indicator::before {
   animation: indicate linear both;
   animation-timeline: --main;
   animation-range: contain;
