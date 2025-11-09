@@ -31,7 +31,7 @@ html {
   scroll-snap-type: y mandatory;
 
   /* Create a timeline scope, so we can target any element on the page */
-  timeline-scope: --section, --main, --site-header;
+  timeline-scope: --section, --main, --site-header, --title;
 }
 
 /* We'll want to match these colors for the best melty effect */
@@ -141,28 +141,72 @@ main {
     
   }
 
-  h2 {
-    font-family: 'Newsreader', serif;
-    font-weight: 700;
-    font-size: 10vw;
+  .title-container {
+    width: fit-content;
+    margin-left: -70%;
+    margin-top: 100px;
+    max-height: 300px;
+    /* overflow: hidden; */
     z-index: 100;
     position: relative;
-    font-weight: 400;
-    color:#E1F1F2;
-    margin-left: -70%;
+    view-timeline-name: --title;
 
-    
+    h2 {
+      font-family: 'Newsreader', serif;
+      font-weight: 700;
+      font-size: 10vw;
+      margin: 0;
+      color:#E1F1F2;
+      animation: escape linear both;
+      animation-timeline: --title;
+      animation-range: contain;
+    }
   }
 
+  
+  @keyframes escape{
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+  
+
   .text {
+    view-timeline-name: --text;
+    
     width: 40%;
-    height: 20%;
+    height: 100%;
 
     p{
       font-size: 1.5vw;
       max-width: 70%;
     }
   }
+}
+
+mark {
+  background-color: rgb(33, 210, 220);
+  animation: highlight linear forwards;
+	animation-timeline: --section;
+	animation-range:cover 20%;
+	background: linear-gradient(
+		to right,
+		rgb(33, 210, 220) 60%,
+		transparent 50%
+	);
+	background-position: 100%;
+	background-size: 600% 200%;
+	border-radius: 0.125rem;
+	padding-inline: 0.125rem;
+}
+
+@keyframes highlight {
+	to {
+		background-position: 0;
+	}
 }
 
 strong {
