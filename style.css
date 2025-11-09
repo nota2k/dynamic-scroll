@@ -1,34 +1,283 @@
-.container {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
 
-  scroll-timeline-name: --scroll-timeline;
-  overflow-y: scroll;
-  max-width: 600px;
-  margin: 40px auto;
-  height: 300px;
+:root {
+  --color-primary: #E1F1F2;
+  --color-secondary: #C0D6DF;
+  --color-tertiary: #9FB3C0;
+  --color-quaternary: #7F909D;
+  --color-quinary: #5F6D7A;
+  --color-senary: #3F4A53;
+
+  --max-content-width: 100rem;
+  --max-reading-measure: 50ch;
+  --min-tap-size: 48px;
+  --min-tap-space: 8px;
+  --color-background: #000;
+  --color-text: #fff0f4;
+  --color-primary: oklch(74% 0.15 32);
+  --color-secondary: oklch(65% 0.13 210);
+  --color-ui: oklch(65% 0.05 210);
+  --color-yellow: oklch(80% 0.16 85);
+  --color-green: oklch(60% 0.16 135);
+  --color-red: oklch(65% 0.18 15);
+  --color-green-2: oklch(54% 0.11 164);
+  --color-purple: oklch(62% 0.15 318);
+  --color-red-2: oklch(57% 0.2 15);
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-secondary);
+}
+
+html {
+  /* Create a snapping rule on the html element */
+  scroll-snap-type: y mandatory;
+
+  /* Create a timeline scope, so we can target any element on the page */
+  timeline-scope: --section, --main, --site-header;
+}
+
+/* We'll want to match these colors for the best melty effect */
+/* But play around with them (and add a color to section) to see happens */
+body,
+.content {
+  background-color: #161820;
+  font-family: 'Montserrat', sans-serif;
+  color:#E1F1F2;
+  
+  /* overflow: hidden;
+  position: fixed; */
+  inset: 0;
+
+  /* Animate the content based on the section scrolling */
+  --contrast: 4;
+  --blur: 0.5rem;
+
+  animation: blink ease-in-out both;
+  animation-timeline: --section;
+
+  .section-content {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    gap: 10%;
+
+  }
+  
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    filter: blur(var(--blur)) contrast(var(--contrast));
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  50% {
+    filter: blur(0) contrast(1);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+
+
+main {
+  view-timeline: --main;
+}
+
+.section {
+  /* Creating a snapping rule on the section element */
+  scroll-snap-align: start; 
+  scroll-snap-stop: always;
+
+  /* Attach the timeline to the section element*/
+  view-timeline: --section;
+
+  /* Set each section to the full dynamic height of the viewport */
+  height: 100vh;
+  width: 100%;
+  z-index: 100;
   position: relative;
-}
 
-.box {
-  width: 100px;
-  height: 100px;
-  background: #3190fc;
-  border-radius: 10px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
-  position:absolute;
-  bottom: 0;
-  animation: scrolling-box 1s ease-in-out;
-  animation-timeline: --scroll-timeline;
-}
 
-.stretcher {
-  height: 600px;
-}
+  .image-container {
+    width: 50%;
+    position: relative;
 
-@keyframes scrolling-box {
-  from {
-    transform:rotate(0deg);
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: inset -30px -32px 52px 25px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: 100vh;
+    }
   }
-  to {
-    transform: rotate(360deg);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    
+  }
+
+  h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 700;
+    font-size: 10vw;
+    z-index: 100;
+    position: relative;
+    font-weight: 400;
+    color:#E1F1F2;
+    margin-left: -50%;
+  }
+
+  .text {
+    width: 40%;
+    height: 20%;
+
+    p{
+      font-size: 1.5vw;
+      max-width: 70%;
+    }
   }
 }
+
+.content {
+  /* Fix the content, so it doesn't scroll with the section */
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+
+  /* Animate the content based on the section scrolling */
+  --contrast: 4;
+  --blur: 0.5rem;
+
+  animation: blink ease-in-out both;
+  animation-timeline: --section;
+}
+
+nav {
+  --indicator-top: 1rem;
+  --indicator-right: 1rem;
+  --indicator-padding: 0.25em;
+  --indicator-gap: 1rem;
+  --indicator-size: 30px;
+  --indicator-total-height: calc(var(--indicator-size) + var(--indicator-padding) * 2);
+
+  position: fixed;
+  inset-block-start: var(--indicator-top);
+  inset-inline-end: var(--indicator-right);
+  margin-block-start: calc(var(--indicator-total-height) / -2);
+  z-index: 200;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: var(--indicator-gap);
+    margin: 0px;
+    padding: 0px;
+
+    &:before {
+      --size: calc(var(--indicator-size));
+      border-radius: 50%;
+      content: '';
+      color: var(--color-indicator, var(--color-text));
+      background-color: currentColor;
+      box-shadow: inset 0 0 0 4px var(--color-background);
+      position: absolute;
+      inset-inline: 0;
+      margin-inline: auto;
+      padding: 3px;
+      width: var(--size);
+      height: var(--size);
+      z-index: -1;
+    } 
+
+    li {
+      list-style: none;
+      display: block;
+      
+      a {
+        --color-link: var(--color-text);
+        display: block;
+        padding: var(--indicator-padding);
+        text-decoration: none;
+        color: #E1F1F2;
+
+        &::before {
+          content: "";
+          display: block;
+          width: var(--indicator-size);
+          height: var(--indicator-size);
+          border-width: 1px;
+          border-style: solid;
+          border-color: initial;
+          border-image: initial;
+          border-radius: 50%;
+        }
+      }
+
+      &:first-of-type {
+        -webkit-margin-before: calc(var(--indicator-padding) * -1);
+        margin-block-start: calc(var(--indicator-padding) * -1);
+      }
+    }
+  }
+  
+}
+
+.indicator {
+  animation: indicate linear both;
+  animation-timeline: --main;
+  animation-range: contain;
+}
+
+@keyframes indicate {
+  0% {
+    --color-indicator: var(--color-primary);
+    transform: translateY(0);
+  }
+
+  25% {
+    --color-indicator: var(--color-yellow);
+  }
+
+  50% {
+    --color-indicator: var(--color-secondary);
+  }
+
+  75% {
+    --color-indicator: var(--color-red);
+  }
+
+  100% {
+    --color-indicator: var(--color-purple);
+    transform: translateY(
+      calc(var(--indicator-total-height) - var(--indicator-size))
+    );
+  }
+}
+
+.sr-only {
+  clip: rect(0px, 0px, 0px, 0px);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border-width: 0px;
+  margin: -1px;
+  padding: 0px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 
+  The actual page styling is in a different stylesheet to not clutter
+  this pen with irrelevant or confusing code
+
+  https://codepen.io/giana/pen/rNRzgRj
+*/
